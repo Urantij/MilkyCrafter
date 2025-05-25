@@ -22,17 +22,19 @@ static class Commands
     /// <param name="targetLevel">До какого + точим</param>
     /// <param name="addedChance">-ac, Отклонение от 50% шанса при точке на +1</param>
     /// <param name="protectSinceLevel">-p, С какого + юзать протек при точке</param>
-    /// <param name="drinkBlessTea">Чаечек пиём?</param>
+    /// <param name="noDrinkBlessTea">Чаечек не пиём?</param>
     /// <param name="startingLevel">-sl, Хуйня</param>
     /// <param name="attempts">Сколько итерация в симуляции</param>
     public static void Do([Argument] int targetLevel, double addedChance = 0.0, int protectSinceLevel = 5,
-        bool drinkBlessTea = true, int startingLevel = 0, double attempts = Program.Attempts)
+        bool noDrinkBlessTea = false, int startingLevel = 0, double attempts = Program.Attempts)
     {
         for (int i = 0; i < Chances.ResultChanceArray.Length; i++)
         {
             Chances.ResultChanceArray[i] =
                 (i < Chances.LevelToChance.Length ? Chances.LevelToChance[i] : Chances.ChanceOver) + addedChance;
         }
+
+        bool drinkBlessTea = !noDrinkBlessTea;
 
         Random random = new();
 
