@@ -36,6 +36,8 @@ static class Commands
 
         bool drinkBlessTea = !noDrinkBlessTea;
 
+        Console.WriteLine(drinkBlessTea ? "пиём" : "не пиём");
+
         Random random = new();
 
         DateTimeOffset start = DateTimeOffset.UtcNow;
