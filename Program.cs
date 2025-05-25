@@ -187,21 +187,30 @@ static class Commands
             {
                 LevelStat prevStat = totalStats[level - 1];
                 LevelStat prevPrevStat = totalStats[level - 2];
-                
-                // Количество AvgEnhances включает в себя енхансы и давшие именно этот тир,
-                // а также енхансы, где прокнул 1% и получился тир на 1 выше нужного
-                // Мы плюсуем количество траев, необходимые для получения текущего уровня
-                // То есть мы берём те прошлые уровни, где не прокнул 1%
-                // И добавляем позапрошлые уровни, где прокнул 1%
-                
-                currentAvgEnhances += stat.AvgTries * (prevStat.AvgEnhances * (1 - prevPrevStat.AvgSuperSuccess));
-                currentAvgEnhances += stat.AvgTries * (prevPrevStat.AvgEnhances * prevPrevStat.AvgSuperSuccess);
 
-                currentAvgProtects += stat.AvgTries * (prevStat.AvgProtects * (1 - prevPrevStat.AvgSuperSuccess));
-                currentAvgProtects += stat.AvgTries * (prevPrevStat.AvgProtects * prevPrevStat.AvgSuperSuccess);
+                double prevPart = 1 - prevPrevStat.AvgSuperSuccess;
                 
-                currentAvgExp += stat.AvgTries * (prevStat.AvgExp * (1 - prevPrevStat.AvgSuperSuccess));
-                currentAvgExp += stat.AvgTries * (prevPrevStat.AvgExp * prevPrevStat.AvgSuperSuccess);
+                currentAvgEnhances += stat.AvgTries * (prevStat.AvgEnhances * prevPart + 
+                                                       prevPrevStat.AvgEnhances * prevPrevStat.AvgSuperSuccess);
+                currentAvgProtects += stat.AvgTries * (prevStat.AvgProtects * prevPart  + 
+                                                       prevPrevStat.AvgProtects * prevPrevStat.AvgSuperSuccess);
+                currentAvgExp += stat.AvgTries * (prevStat.AvgExp * prevPart + 
+                                                  prevPrevStat.AvgExp * prevPrevStat.AvgSuperSuccess);
+                
+                // // Количество AvgEnhances включает в себя енхансы и давшие именно этот тир,
+                // // а также енхансы, где прокнул 1% и получился тир на 1 выше нужного
+                // // Мы плюсуем количество траев, необходимые для получения текущего уровня
+                // // То есть мы берём те прошлые уровни, где не прокнул 1%
+                // // И добавляем позапрошлые уровни, где прокнул 1%
+                //
+                // currentAvgEnhances += stat.AvgTries * (prevStat.AvgEnhances * (1 - prevPrevStat.AvgSuperSuccess));
+                // // currentAvgEnhances += stat.AvgTries * (prevPrevStat.AvgEnhances * prevPrevStat.AvgSuperSuccess);
+                //
+                // currentAvgProtects += stat.AvgTries * (prevStat.AvgProtects * (1 - prevPrevStat.AvgSuperSuccess));
+                // // currentAvgProtects += stat.AvgTries * (prevPrevStat.AvgProtects * prevPrevStat.AvgSuperSuccess);
+                //
+                // currentAvgExp += stat.AvgTries * (prevStat.AvgExp * (1 - prevPrevStat.AvgSuperSuccess));
+                // // currentAvgExp += stat.AvgTries * (prevPrevStat.AvgExp * prevPrevStat.AvgSuperSuccess);
             }
             else if (level > 0)
             {
